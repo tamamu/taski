@@ -1,22 +1,23 @@
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use taski::database;
 
     #[test]
     fn parse_json() {
         use std::fs::File;
         use std::io::BufReader;
 
-        let file = File::open("taski.json").unwrap();
+        let file = File::open("tests/taski.json").unwrap();
         let reader = BufReader::new(file);
 
-        let u: super::Database = serde_json::from_reader(reader).unwrap();
+        let u: database::Database = serde_json::from_reader(reader).unwrap();
 
         assert!(
             u.tasks
                 .iter()
                 .filter(|&task| task.tag == u.current_task)
-                .collect()
+                .cloned()
+                .collect::<Vec<database::Task>>()
                 .len()
                 == 1
         );
