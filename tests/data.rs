@@ -29,4 +29,15 @@ mod tests {
         assert_eq!(u.tasks[0].children[1].content, "TODO3");
         assert_eq!(u.tasks[1].content, "TODO4");
     }
+
+    #[test]
+    fn create_task() {
+        let task = database::Task::new("new todo".to_owned());
+        println!("{}", task.tag);
+        assert_eq!(task.tag.len(), 40);
+        assert_eq!(task.time, 0);
+        assert_eq!(task.content, "new todo");
+        assert_eq!(task.done, false);
+        assert_eq!(task.children.len(), 0);
+    }
 }
