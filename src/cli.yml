@@ -1,0 +1,45 @@
+name: taski
+version: "1.0"
+author: Eddie <tamamu.1r1s@gmail.com>
+about: Manage tasks
+subcommands:
+  - add:
+      about: Add a new task
+      args:
+        - parent:
+            short: p
+            long: parent
+            value_name: TAG
+            help: Sets a parent task
+            takes_value: true
+        - TEXT:
+            help: Input task content
+            required: true
+            index: 1
+  - remove:
+      about: Remove a task
+      args:
+        - TAG:
+            help: Sets a task tag
+            required: true
+            index: 1
+  - set:
+      about: Set a task as current task
+      args:
+        - TAG:
+            help: Sets a task tag
+            required: true
+            index: 1
+  - pause:
+      about: Pause the current task timer
+  - resume:
+      about: Resume the current task timer
+  - done:
+      about: Mark the current task as done
+  - current:
+      about: Show current task information
+      subcommands:
+        - ls:
+            about: List children of the current task
+        - time:
+            about: Show the elapsed time of the current task
