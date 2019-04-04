@@ -5,5 +5,6 @@ authors = ["tamamu <tamamu.1r1s@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+serde = "1.0.90"
 serde_json = "1.0"
 clap = { version = "~2.27.0", features = ["yaml"] }
