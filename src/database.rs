@@ -9,6 +9,15 @@ pub struct Database {
     pub tasks: Vec<Task>,
 }
 
+impl Database {
+    pub fn new() -> Self {
+        Self {
+            current_task: "".to_owned(),
+            tasks: Vec::new(),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Task {
     pub tag: String,
