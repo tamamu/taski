@@ -23,7 +23,20 @@ impl Database {
         unimplemented!();
     }
     pub fn list_tags(&self) -> Vec<String> {
-        unimplemented!();
+        use std::collections::VecDeque;
+        let mut taskq: VecDeque<&Task> = VecDeque::new();
+        for task in self.tasks.iter() {
+            taskq.push_back(task);
+        }
+        let mut tags: Vec<String> = Vec::new();
+        while !taskq.is_empty() {
+            let task = taskq.pop_front().unwrap();
+            tags.push(task.tag.clone());
+            for child in task.children.iter().rev() {
+                taskq.push_front(child);
+            }
+        }
+        tags
     }
 }
 
