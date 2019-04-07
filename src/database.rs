@@ -19,6 +19,9 @@ impl Database {
     pub fn add_task(&mut self, task: Task) {
         self.tasks.push(task);
     }
+    pub fn add_child_task(&mut self, tag: &str, task: Task) {
+        unimplemented!();
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
