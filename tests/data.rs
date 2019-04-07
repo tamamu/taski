@@ -42,6 +42,14 @@ mod tests {
     }
 
     #[test]
+    fn add_child_task() {
+        let parent_task = database::Task::new("A".to_owned());
+        let child_task = database::Task::new("B".to_owned());
+        parent_task.add_child(child_task);
+        assert_eq!(parent_task.children[0].content, "B");
+    }
+
+    #[test]
     fn add_task_at_root() {
         let mut db = database::Database::new();
         let task = database::Task::new("new todo".to_owned());
