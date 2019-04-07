@@ -17,7 +17,7 @@ mod tests {
                 .iter()
                 .filter(|&task| task.tag == u.current_task)
                 .cloned()
-                .collect::<Vec<database::Task>>()
+                .collect::<Vec<Box<database::Task>>>()
                 .len()
                 == 1
         );
@@ -43,7 +43,7 @@ mod tests {
 
     #[test]
     fn add_child_task() {
-        let parent_task = database::Task::new("A".to_owned());
+        let mut parent_task = database::Task::new("A".to_owned());
         let child_task = database::Task::new("B".to_owned());
         parent_task.add_child(child_task);
         assert_eq!(parent_task.children[0].content, "B");

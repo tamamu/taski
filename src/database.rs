@@ -8,7 +8,7 @@ pub enum DBError {}
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Database {
     pub current_task: String,
-    pub tasks: Vec<Task>,
+    pub tasks: Vec<Box<Task>>,
 }
 
 impl Database {
@@ -19,18 +19,40 @@ impl Database {
         }
     }
     pub fn add_task(&mut self, task: Task) {
-        self.tasks.push(task);
+        self.tasks.push(Box::new(task));
     }
-    pub fn add_child_task(&mut self, tag: &str, task: Task) -> Result<String, DBError> {
-        unimplemented!();
+    pub fn add_child_task(&mut self, tag: &str, task: Task) -> Result<(), DBError> {
+        let parent = self.get_mut_task_by_tag(tag);
+        parent
+            .map(|taken| taken.add_child(task))
+            .ok_or(DBError::TagNotFound)
     }
-    pub fn list_tasks(&self) -> Vec<&Task> {
+    fn get_mut_task_by_tag(&mut self, tag: &str) -> Option<&mut Box<Task>> {
         use std::collections::VecDeque;
-        let mut taskq: VecDeque<&Task> = VecDeque::new();
+        let mut taskq: VecDeque<&mut Box<Task>> = VecDeque::new();
+        let mut target: Option<&mut Box<Task>> = None;
+        for task in self.tasks.iter_mut() {
+            taskq.push_back(task);
+        }
+        while !taskq.is_empty() {
+            let task = taskq.pop_front().unwrap();
+            if task.tag == tag {
+                target = Some(task);
+                break;
+            }
+            for child in task.children.iter_mut().rev() {
+                taskq.push_front(child);
+            }
+        }
+        target
+    }
+    pub fn list_tasks(&self) -> Vec<&Box<Task>> {
+        use std::collections::VecDeque;
+        let mut taskq: VecDeque<&Box<Task>> = VecDeque::new();
         for task in self.tasks.iter() {
             taskq.push_back(task);
         }
-        let mut tasks: Vec<&Task> = Vec::new();
+        let mut tasks: Vec<&Box<Task>> = Vec::new();
         while !taskq.is_empty() {
             let task = taskq.pop_front().unwrap();
             tasks.push(task);
@@ -48,7 +70,7 @@ pub struct Task {
     pub time: u64,
     pub content: String,
     pub done: bool,
-    pub children: Vec<Task>,
+    pub children: Vec<Box<Task>>,
 }
 
 impl Task {
@@ -67,6 +89,6 @@ impl Task {
         }
     }
     pub fn add_child(&mut self, task: Task) {
-        self.children.push(task);
+        self.children.push(Box::new(task));
     }
 }
