@@ -66,4 +66,7 @@ impl Task {
             children: Vec::new(),
         }
     }
+    pub fn add_child(&mut self, task: Task) {
+        unimplemented!();
+    }
 }
