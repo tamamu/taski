@@ -3,6 +3,8 @@ use sha1::Sha1;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
+pub enum DBError {}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Database {
     pub current_task: String,
@@ -19,7 +21,7 @@ impl Database {
     pub fn add_task(&mut self, task: Task) {
         self.tasks.push(task);
     }
-    pub fn add_child_task(&mut self, tag: &str, task: Task) {
+    pub fn add_child_task(&mut self, tag: &str, task: Task) -> Result<String, DBError> {
         unimplemented!();
     }
     pub fn list_tags(&self) -> Vec<String> {
