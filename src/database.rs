@@ -22,6 +22,9 @@ impl Database {
     pub fn add_child_task(&mut self, tag: &str, task: Task) {
         unimplemented!();
     }
+    pub fn list_tags(&self) -> Vec<String> {
+        unimplemented!();
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
