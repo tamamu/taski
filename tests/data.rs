@@ -69,6 +69,9 @@ mod tests {
         let reader = BufReader::new(file);
 
         let u: database::Database = serde_json::from_reader(reader).unwrap();
-        assert_eq!(u.list_tags(), vec!["foo", "bar", "hoge", "baz"]);
+        assert_eq!(
+            u.list_tasks().map(|task| task.tag).collect(),
+            vec!["foo", "bar", "hoge", "baz"]
+        );
     }
 }
