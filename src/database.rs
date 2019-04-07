@@ -67,6 +67,6 @@ impl Task {
         }
     }
     pub fn add_child(&mut self, task: Task) {
-        unimplemented!();
+        self.children.push(task);
     }
 }
