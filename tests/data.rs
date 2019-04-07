@@ -42,7 +42,7 @@ mod tests {
     }
 
     #[test]
-    fn add_task() {
+    fn add_task_at_root() {
         let mut db = database::Database::new();
         let task = database::Task::new("new todo".to_owned());
         db.add_task(task);
