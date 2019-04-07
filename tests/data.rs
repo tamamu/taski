@@ -40,4 +40,12 @@ mod tests {
         assert_eq!(task.done, false);
         assert_eq!(task.children.len(), 0);
     }
+
+    #[test]
+    fn add_task() {
+        let mut db = database::Database::new();
+        let task = database::Task::new("new todo".to_owned());
+        db.add_task(task);
+        assert_eq!(db.tasks[0].content, "new todo");
+    }
 }
