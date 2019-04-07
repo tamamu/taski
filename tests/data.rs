@@ -56,7 +56,7 @@ mod tests {
         db.add_task(parent_task);
         let parent_tag = db.tasks[0].tag.clone();
         let child_task = database::Task::new("todo2".to_owned());
-        db.add_child_task(&parent_tag, child_task);
+        assert!(db.add_child_task(&parent_tag, child_task).is_ok());
         assert_eq!(db.tasks[0].children[0].content, "todo2");
     }
 
