@@ -70,7 +70,10 @@ mod tests {
 
         let u: database::Database = serde_json::from_reader(reader).unwrap();
         assert_eq!(
-            u.list_tasks().map(|task| task.tag).collect(),
+            u.list_tasks()
+                .iter()
+                .map(|task| task.tag.clone())
+                .collect::<Vec<String>>(),
             vec!["foo", "bar", "hoge", "baz"]
         );
     }
