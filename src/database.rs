@@ -3,7 +3,9 @@ use sha1::Sha1;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
-pub enum DBError {}
+pub enum DBError {
+    TagNotFound,
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Database {
