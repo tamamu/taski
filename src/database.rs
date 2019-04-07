@@ -16,6 +16,9 @@ impl Database {
             tasks: Vec::new(),
         }
     }
+    pub fn add_task(&mut self, task: Task) {
+        unimplemented!();
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
