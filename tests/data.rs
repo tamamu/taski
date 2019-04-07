@@ -59,4 +59,16 @@ mod tests {
         db.add_child_task(&parent_tag, child_task);
         assert_eq!(db.tasks[0].children[0].content, "todo2");
     }
+
+    #[test]
+    fn list_tags() {
+        use std::fs::File;
+        use std::io::BufReader;
+
+        let file = File::open("tests/taski.json").unwrap();
+        let reader = BufReader::new(file);
+
+        let u: database::Database = serde_json::from_reader(reader).unwrap();
+        assert_eq!(u.list_tags(), vec!["foo", "bar", "hoge", "baz"]);
+    }
 }
