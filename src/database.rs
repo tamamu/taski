@@ -17,7 +17,7 @@ impl Database {
         }
     }
     pub fn add_task(&mut self, task: Task) {
-        unimplemented!();
+        self.tasks.push(task);
     }
 }
 
