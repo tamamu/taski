@@ -56,7 +56,13 @@ fn main() {
     let matches = App::from_yaml(yaml).get_matches();
     let mut db = entry().unwrap();
     if let Some(matches) = matches.subcommand_matches("add") {
-        dbg!(matches.args.get("TEXT"));
+        let content = matches.args.get("TEXT").unwrap().vals[0]
+            .clone()
+            .into_string()
+            .unwrap();
+        let task = Task::new(content);
+        db.add_task(task);
+        save_json(&db);
     } else if let Some(matches) = matches.subcommand_matches("ls") {
 
     } else if let Some(matches) = matches.subcommand_matches("current") {
