@@ -34,6 +34,9 @@ impl Database {
         task.map(|taken| taken.mark_as_done())
             .ok_or(DBError::TagNotFound)
     }
+    pub fn set_current_task(&mut self, tag: &str) -> Result<(), DBError> {
+        unimplemented!()
+    }
     fn get_mut_task_by_tag(&mut self, tag: &str) -> Option<&mut Box<Task>> {
         use std::collections::VecDeque;
         let mut taskq: VecDeque<&mut Box<Task>> = VecDeque::new();
