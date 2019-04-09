@@ -3,6 +3,7 @@ use sha1::Sha1;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
+#[derive(Debug)]
 pub enum DBError {
     TagNotFound,
 }
