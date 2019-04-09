@@ -43,6 +43,11 @@ fn entry() -> Result<Database, Error> {
     Ok(instance.unwrap())
 }
 
+fn save_json(db: &Database) -> Result<(), Error> {
+    let path = ensure_path()?;
+    let serialized = serde_json::to_string_pretty(&db)?;
+    let mut f = BufWriter::new(File::create(path)?);
+    f.write(serialized.as_bytes())?;
     Ok(())
 }
 
