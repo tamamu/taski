@@ -88,7 +88,7 @@ mod tests {
 
     #[test]
     fn done_task() {
-        let task = database::Task::new("todo".to_owned());
+        let mut task = database::Task::new("todo".to_owned());
         task.mark_as_done();
         assert_eq!(task.done, true);
     }
