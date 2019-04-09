@@ -91,5 +91,11 @@ fn main() {
     } else if let Some(matches) = matches.subcommand_matches("remove") {
     } else if let Some(matches) = matches.subcommand_matches("resume") {
     } else if let Some(matches) = matches.subcommand_matches("set") {
+        let tag = matches.args.get("TAG").unwrap().vals[0]
+            .clone()
+            .into_string()
+            .unwrap();
+        db.set_current_task(&tag).unwrap();
+        save_json(&db).unwrap();
     }
 }
