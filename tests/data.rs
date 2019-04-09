@@ -85,4 +85,11 @@ mod tests {
             vec!["foo", "bar", "hoge", "baz"]
         );
     }
+
+    #[test]
+    fn done_task() {
+        let task = database::Task::new("todo".to_owned());
+        task.mark_as_done();
+        assert_eq!(task.done, true);
+    }
 }
