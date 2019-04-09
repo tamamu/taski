@@ -100,5 +100,6 @@ mod tests {
         db.add_task(task);
         let tag = db.tasks[0].tag.clone();
         assert!(db.done_task(&tag).is_ok());
+        assert!(db.tasks[0].done)
     }
 }
