@@ -80,6 +80,13 @@ fn main() {
         }
     } else if let Some(matches) = matches.subcommand_matches("current") {
     } else if let Some(matches) = matches.subcommand_matches("done") {
+        if let Some(arg) = matches.args.get("TAG") {
+            let tag = arg.vals[0].clone().into_string().unwrap();
+            db.done_task(&tag).unwrap();
+        } else {
+            db.done_current_task().unwrap();
+        }
+        save_json(&db).unwrap();
     } else if let Some(matches) = matches.subcommand_matches("pause") {
     } else if let Some(matches) = matches.subcommand_matches("remove") {
     } else if let Some(matches) = matches.subcommand_matches("resume") {
