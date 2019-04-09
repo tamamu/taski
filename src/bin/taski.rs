@@ -37,7 +37,7 @@ fn entry() -> Result<Database, Error> {
         instance = Some(db);
     } else {
         let db = Database::new();
-        save_json(&db);
+        save_json(&db)?;
         instance = Some(db);
     }
     Ok(instance.unwrap())
@@ -62,10 +62,15 @@ fn main() {
             .unwrap();
         let task = Task::new(content);
         db.add_task(task);
-        save_json(&db);
+        save_json(&db).unwrap();
     } else if let Some(matches) = matches.subcommand_matches("ls") {
         for task in db.list_tasks().iter() {
-            println!("[{}] {}", &task.tag[0..8], task.content);
+            println!(
+                "{}[{}] {}",
+                if task.done { "✔" } else { " " },
+                &task.tag[0..8],
+                task.content
+            );
         }
     } else if let Some(matches) = matches.subcommand_matches("current") {
     } else if let Some(matches) = matches.subcommand_matches("done") {
