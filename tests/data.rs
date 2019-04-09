@@ -102,4 +102,14 @@ mod tests {
         assert!(db.done_task(&tag).is_ok());
         assert!(db.tasks[0].done)
     }
+
+    #[test]
+    fn set_current_task() {
+        let mut db = database::Database::new();
+        let task = database::Task::new("todo".to_owned());
+        db.add_task(task);
+        let tag = db.tasks[0].tag.clone();
+        assert!(db.set_current_task(&tag).is_ok());
+        assert_eq!(db.current_task, tag);
+    }
 }
