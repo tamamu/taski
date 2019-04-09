@@ -66,9 +66,15 @@ fn main() {
     } else if let Some(matches) = matches.subcommand_matches("ls") {
         for task in db.list_tasks().iter() {
             println!(
-                "{}[{}] {}",
+                "{}{}[{}] {}",
+                if task.tag == db.current_task {
+                    ">"
+                } else {
+                    " "
+                },
                 if task.done { "✔" } else { " " },
-                &task.tag[0..8],
+                //&task.tag[0..8],
+                &task.tag,
                 task.content
             );
         }
