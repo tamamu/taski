@@ -99,6 +99,6 @@ mod tests {
         let mut db = database::Database::new();
         db.add_task(task);
         let tag = db.tasks[0].tag.clone();
-        db.done_task(&tag);
+        assert!(db.done_task(&tag).is_ok());
     }
 }
