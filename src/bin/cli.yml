@@ -38,6 +38,11 @@ subcommands:
       about: Resume the current task timer
   - done:
       about: Mark the current task as done
+      args:
+        - TAG:
+            help: Sets a task tag
+            required: false
+            index: 1
   - current:
       about: Show current task information
       subcommands:
