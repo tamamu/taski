@@ -12,32 +12,44 @@ use std::fs::File;
 use std::io::{BufWriter, Error, Write};
 use std::path::{Path, PathBuf};
 
-use taski::database;
+use taski::database::{Database, Task};
 
-fn entry() -> Result<(), Error> {
-    let key = "TASKI_JSON_PATH";
+static TASKI_JSON_PATH: &str = "TASKI_JSON_PATH";
+
+fn ensure_path() -> Result<PathBuf, Error> {
     let mut pathbuf = PathBuf::new();
-    match env::var_os(key) {
+    match env::var_os(TASKI_JSON_PATH) {
         Some(val) => pathbuf.push(val),
         None => {
             pathbuf.push(home_dir().unwrap());
             pathbuf.push(".taski.json");
         }
     }
-    let path = Path::new(&pathbuf);
-    if !path.exists() {
-        let instance = database::Database::new();
-        let serialized = serde_json::to_string(&instance)?;
-        let mut f = BufWriter::new(File::create(path)?);
-        f.write(serialized.as_bytes())?;
+    Ok(pathbuf)
+}
+
+fn entry() -> Result<Database, Error> {
+    let path = ensure_path()?;
+    let mut instance: Option<Database> = None;
+    if path.exists() {
+        let f = File::open(path).expect("file not found");
+        let db: Database = serde_json::from_reader(f).expect("error while reading json");
+        instance = Some(db);
+    } else {
+        let db = Database::new();
+        save_json(&db);
+        instance = Some(db);
     }
+    Ok(instance.unwrap())
+}
+
     Ok(())
 }
 
 fn main() {
     let yaml = load_yaml!("cli.yml");
     let matches = App::from_yaml(yaml).get_matches();
-    entry().unwrap();
+    let mut db = entry().unwrap();
     if let Some(matches) = matches.subcommand_matches("add") {
         dbg!(matches.args.get("TEXT"));
     } else if let Some(matches) = matches.subcommand_matches("ls") {
