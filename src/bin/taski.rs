@@ -38,4 +38,15 @@ fn main() {
     let yaml = load_yaml!("cli.yml");
     let matches = App::from_yaml(yaml).get_matches();
     entry().unwrap();
+    if let Some(matches) = matches.subcommand_matches("add") {
+        dbg!(matches.args.get("TEXT"));
+    } else if let Some(matches) = matches.subcommand_matches("ls") {
+
+    } else if let Some(matches) = matches.subcommand_matches("current") {
+    } else if let Some(matches) = matches.subcommand_matches("done") {
+    } else if let Some(matches) = matches.subcommand_matches("pause") {
+    } else if let Some(matches) = matches.subcommand_matches("remove") {
+    } else if let Some(matches) = matches.subcommand_matches("resume") {
+    } else if let Some(matches) = matches.subcommand_matches("set") {
+    }
 }

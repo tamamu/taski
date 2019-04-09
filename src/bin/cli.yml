@@ -30,6 +30,8 @@ subcommands:
             help: Sets a task tag
             required: true
             index: 1
+  - ls:
+      about: List all tasks
   - pause:
       about: Pause the current task timer
   - resume:
