@@ -64,7 +64,9 @@ fn main() {
         db.add_task(task);
         save_json(&db);
     } else if let Some(matches) = matches.subcommand_matches("ls") {
-
+        for task in db.list_tasks().iter() {
+            println!("[{}] {}", &task.tag[0..8], task.content);
+        }
     } else if let Some(matches) = matches.subcommand_matches("current") {
     } else if let Some(matches) = matches.subcommand_matches("done") {
     } else if let Some(matches) = matches.subcommand_matches("pause") {
