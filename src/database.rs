@@ -34,6 +34,9 @@ impl Database {
         task.map(|taken| taken.mark_as_done())
             .ok_or(DBError::TagNotFound)
     }
+    pub fn done_current_task(&mut self) -> Result<(), DBError> {
+        unimplemented!();
+    }
     pub fn set_current_task(&mut self, tag: &str) -> Result<(), DBError> {
         let task = self.get_mut_task_by_tag(tag);
         match task {
