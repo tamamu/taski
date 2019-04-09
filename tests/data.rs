@@ -98,6 +98,7 @@ mod tests {
         let task = database::Task::new("todo".to_owned());
         let mut db = database::Database::new();
         db.add_task(task);
-        db.done_task(db.tasks[0].tag);
+        let tag = db.tasks[0].tag.clone();
+        db.done_task(&tag);
     }
 }
