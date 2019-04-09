@@ -94,6 +94,6 @@ impl Task {
         self.children.push(Box::new(task));
     }
     pub fn mark_as_done(&mut self) {
-        unimplemented!()
+        self.done = true;
     }
 }
