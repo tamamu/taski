@@ -79,6 +79,12 @@ fn main() {
             );
         }
     } else if let Some(matches) = matches.subcommand_matches("current") {
+        if let Some(matches) = matches.subcommand_matches("ls") {
+        } else if let Some(matches) = matches.subcommand_matches("time") {
+        } else {
+            let task = db.get_current_task();
+            task.map(|taken| println!("{}", taken.content));
+        }
     } else if let Some(matches) = matches.subcommand_matches("done") {
         if let Some(arg) = matches.args.get("TAG") {
             let tag = arg.vals[0].clone().into_string().unwrap();
