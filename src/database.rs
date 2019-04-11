@@ -55,6 +55,28 @@ impl Database {
             None => Err(DBError::TagNotFound),
         }
     }
+    pub fn get_current_task(&mut self) -> Option<&Box<Task>> {
+        unimplemented!();
+    }
+    fn get_task_by_tag(&self, tag: &str) -> Option<&Box<Task>> {
+        use std::collections::VecDeque;
+        let mut taskq: VecDeque<&Box<Task>> = VecDeque::new();
+        let mut target: Option<&Box<Task>> = None;
+        for task in self.tasks.iter() {
+            taskq.push_back(task);
+        }
+        while !taskq.is_empty() {
+            let task = taskq.pop_front().unwrap();
+            if task.tag == tag {
+                target = Some(task);
+                break;
+            }
+            for child in task.children.iter().rev() {
+                taskq.push_front(child);
+            }
+        }
+        target
+    }
     fn get_mut_task_by_tag(&mut self, tag: &str) -> Option<&mut Box<Task>> {
         use std::collections::VecDeque;
         let mut taskq: VecDeque<&mut Box<Task>> = VecDeque::new();
