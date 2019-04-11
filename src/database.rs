@@ -56,7 +56,13 @@ impl Database {
         }
     }
     pub fn get_current_task(&mut self) -> Option<&Box<Task>> {
-        unimplemented!();
+        let tag = self.current_task.clone();
+        if tag.len() == 0 {
+            None
+        } else {
+            let task = self.get_task_by_tag(&tag);
+            task.map(|taken| taken)
+        }
     }
     fn get_task_by_tag(&self, tag: &str) -> Option<&Box<Task>> {
         use std::collections::VecDeque;
