@@ -80,6 +80,13 @@ fn main() {
         }
     } else if let Some(matches) = matches.subcommand_matches("current") {
         if let Some(matches) = matches.subcommand_matches("ls") {
+            let task = db.get_current_task();
+            task.map(|taken| {
+                taken
+                    .children
+                    .iter()
+                    .map(|child| println!("{}", child.content))
+            });
         } else if let Some(matches) = matches.subcommand_matches("time") {
         } else {
             let task = db.get_current_task();
