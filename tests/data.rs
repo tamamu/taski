@@ -134,4 +134,13 @@ mod tests {
         let current_task = db.get_current_task().unwrap();
         assert_eq!(current_task.content, "todo");
     }
+
+    #[test]
+    fn create_printable_task() {
+        let task = database::Task::new("bar".to_owned());
+        let printable = database::PrintableTask::new(task, 2, true);
+        assert!(!printable.task.done);
+        assert!(printable.done_parent);
+        assert_eq!(printable.level, 2);
+    }
 }
