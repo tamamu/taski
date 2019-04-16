@@ -80,7 +80,7 @@ mod tests {
         assert_eq!(
             u.list_tasks()
                 .iter()
-                .map(|task| task.tag.clone())
+                .map(|(task, _level)| task.tag.clone())
                 .collect::<Vec<String>>(),
             vec!["foo", "bar", "hoge", "baz"]
         );
