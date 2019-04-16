@@ -69,7 +69,7 @@ fn main() {
         }
         save_json(&db).unwrap();
     } else if let Some(matches) = matches.subcommand_matches("ls") {
-        for task in db.list_tasks().iter() {
+        for (task, level) in db.list_tasks().iter() {
             println!(
                 "{}{}[{}] {}",
                 if task.tag == db.current_task {
