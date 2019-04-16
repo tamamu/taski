@@ -7,6 +7,7 @@ use dirs::home_dir;
 
 use serde_json;
 
+use std::collections::VecDeque;
 use std::env;
 use std::fs::File;
 use std::io::{BufWriter, Error, Write};
@@ -93,10 +94,42 @@ fn main() {
         if let Some(matches) = matches.subcommand_matches("ls") {
             let task = db.get_current_task();
             task.map(|taken| {
-                taken
-                    .children
-                    .iter()
-                    .map(|child| println!("{}", child.content))
+                let mut taskq: VecDeque<(&Box<Task>, usize, bool, bool)> = VecDeque::new();
+                let mut selected = false;
+                for task in taken.children.iter() {
+                    if selected {
+                        taskq.push_back((task, 0, false, false));
+                    } else if !task.done {
+                        taskq.push_back((task, 0, false, true));
+                        selected = true;
+                    }
+                }
+                while !taskq.is_empty() {
+                    let (task, level, done, parent_selected) = taskq.pop_front().unwrap();
+                    let mut selected = false;
+                    // For ordering
+                    let mut tmpq: VecDeque<(&Box<Task>, usize, bool, bool)> = VecDeque::new();
+                    for child in task.children.iter() {
+                        if parent_selected && !selected && !child.done {
+                            tmpq.push_front((child, level + 1, done, true));
+                            selected = true;
+                        } else {
+                            tmpq.push_front((child, level + 1, done, false));
+                        }
+                    }
+                    while let Some(child) = tmpq.pop_front() {
+                        taskq.push_front(child);
+                    }
+                    println!(
+                        "{:level$}{}{}[{}] {}",
+                        "",
+                        if parent_selected { ">" } else { " " },
+                        if done || task.done { "✔" } else { " " },
+                        &task.tag,
+                        task.content,
+                        level = level * 2
+                    );
+                }
             });
         } else if let Some(matches) = matches.subcommand_matches("time") {
         } else {
