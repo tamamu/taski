@@ -60,8 +60,13 @@ fn main() {
             .clone()
             .into_string()
             .unwrap();
-        let task = Task::new(content);
-        db.add_task(task);
+        let task = Task::new(content.clone());
+        if let Some(matches) = matches.args.get("parent") {
+            let tag = matches.vals[0].clone().into_string().unwrap();
+            db.add_child_task(&tag, task);
+        } else {
+            db.add_task(task);
+        }
         save_json(&db).unwrap();
     } else if let Some(matches) = matches.subcommand_matches("ls") {
         for task in db.list_tasks().iter() {
