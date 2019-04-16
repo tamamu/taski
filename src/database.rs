@@ -102,18 +102,18 @@ impl Database {
         }
         target
     }
-    pub fn list_tasks(&self) -> Vec<&Box<Task>> {
+    pub fn list_tasks(&self) -> Vec<(&Box<Task>, usize)> {
         use std::collections::VecDeque;
-        let mut taskq: VecDeque<&Box<Task>> = VecDeque::new();
+        let mut taskq: VecDeque<(&Box<Task>, usize)> = VecDeque::new();
         for task in self.tasks.iter() {
-            taskq.push_back(task);
+            taskq.push_back((task, 0));
         }
-        let mut tasks: Vec<&Box<Task>> = Vec::new();
+        let mut tasks: Vec<(&Box<Task>, usize)> = Vec::new();
         while !taskq.is_empty() {
-            let task = taskq.pop_front().unwrap();
-            tasks.push(task);
+            let (task, level) = taskq.pop_front().unwrap();
+            tasks.push((task, level));
             for child in task.children.iter().rev() {
-                taskq.push_front(child);
+                taskq.push_front((child, level + 1));
             }
         }
         tasks
