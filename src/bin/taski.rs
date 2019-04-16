@@ -69,18 +69,24 @@ fn main() {
         }
         save_json(&db).unwrap();
     } else if let Some(matches) = matches.subcommand_matches("ls") {
-        for (task, level) in db.list_tasks().iter() {
+        for printable in db.list_tasks().iter() {
             println!(
-                "{}{}[{}] {}",
-                if task.tag == db.current_task {
+                "{:level$}{}{}[{}] {}",
+                "",
+                if printable.task.tag == db.current_task {
                     ">"
                 } else {
                     " "
                 },
-                if task.done { "✔" } else { " " },
+                if printable.done_parent || printable.task.done {
+                    "✔"
+                } else {
+                    " "
+                },
                 //&task.tag[0..8],
-                &task.tag,
-                task.content
+                &printable.task.tag,
+                printable.task.content,
+                level = printable.level * 2
             );
         }
     } else if let Some(matches) = matches.subcommand_matches("current") {
