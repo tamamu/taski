@@ -151,3 +151,20 @@ impl Task {
         self.done = true;
     }
 }
+
+#[derive(Debug, Clone)]
+pub struct PrintableTask<'a> {
+    pub task: &'a Box<Task>,
+    pub level: usize,
+    pub done_parent: bool,
+}
+
+impl<'a> PrintableTask<'a> {
+    pub fn new(task: &'a Box<Task>, level: usize, done: bool) -> Self {
+        Self {
+            task: task,
+            level: level,
+            done_parent: done,
+        }
+    }
+}
