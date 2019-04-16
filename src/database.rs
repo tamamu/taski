@@ -113,7 +113,7 @@ impl Database {
             let (task, level, done) = taskq.pop_front().unwrap();
             tasks.push(PrintableTask::new(task, level, done));
             for child in task.children.iter().rev() {
-                taskq.push_front((child, level + 1, task.done));
+                taskq.push_front((child, level + 1, done || task.done));
             }
         }
         tasks
