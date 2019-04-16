@@ -137,8 +137,10 @@ mod tests {
 
     #[test]
     fn create_printable_task() {
+        let mut db = database::Database::new();
         let task = database::Task::new("bar".to_owned());
-        let printable = database::PrintableTask::new(task, 2, true);
+        db.add_task(task);
+        let printable = database::PrintableTask::new(&db.tasks[0], 2, true);
         assert!(!printable.task.done);
         assert!(printable.done_parent);
         assert_eq!(printable.level, 2);
