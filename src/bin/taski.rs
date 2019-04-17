@@ -72,22 +72,18 @@ fn main() {
     } else if let Some(matches) = matches.subcommand_matches("ls") {
         for printable in db.list_tasks().iter() {
             println!(
-                "{:level$}{}{}[{}] {}",
-                "",
-                if printable.task.tag == db.current_task {
-                    ">"
-                } else {
-                    " "
-                },
+                "{: >level$} [{}] {}",
                 if printable.done_parent || printable.task.done {
                     "✔"
+                } else if printable.task.tag == db.current_task {
+                    ">"
                 } else {
                     " "
                 },
                 //&task.tag[0..8],
                 &printable.task.tag,
                 printable.task.content,
-                level = printable.level * 2
+                level = printable.level * 4
             );
         }
     } else if let Some(matches) = matches.subcommand_matches("current") {
@@ -121,13 +117,17 @@ fn main() {
                         taskq.push_front(child);
                     }
                     println!(
-                        "{:level$}{}{}[{}] {}",
-                        "",
-                        if parent_selected { ">" } else { " " },
-                        if done || task.done { "✔" } else { " " },
+                        "{: >level$} [{}] {}",
+                        if done || task.done {
+                            "✔"
+                        } else if parent_selected {
+                            ">"
+                        } else {
+                            " "
+                        },
                         &task.tag,
                         task.content,
-                        level = level * 2
+                        level = level * 4
                     );
                 }
             });
